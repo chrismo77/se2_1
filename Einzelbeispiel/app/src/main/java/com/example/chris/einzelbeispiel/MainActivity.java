@@ -1,52 +1,57 @@
 package com.example.chris.einzelbeispiel;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private EditText txtInput;
+    private TextView txtResult;
+    private Button btnCheckInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        txtInput = (EditText) findViewById(R.id.inputString);
+        txtResult = (TextView) findViewById(R.id.outputString);
+        btnCheckInput = (Button) findViewById(R.id.checkButton);
+
+        btnCheckInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                checkString();
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public static boolean isPalindrome(String str) {
+        return str.equalsIgnoreCase(new StringBuilder(str).reverse().toString());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void checkString() {
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        String enteredText = txtInput.getText().toString();
+
+        if (txtInput.length() < 5) {
+            txtResult.setText("Enter at least 5 characters!");
+            return;
+        } else if (enteredText.contains(" ")) {
+            txtResult.setText("No spaces allowed!");
+            return;
         }
 
-        return super.onOptionsItemSelected(item);
+        if (isPalindrome(enteredText)) {
+            txtResult.setText("Entered string is a palindrome.");
+        } else {
+            txtResult.setText("Entered string is NOT a palindrome.");
+        }
+
     }
+
 }
